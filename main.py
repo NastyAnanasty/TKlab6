@@ -26,6 +26,8 @@ def mod2coef(pol):
     coe = coe[::-1]
     for i in range(coe.shape[0], 7):
         coe = np.append(coe, [0])
+    if coe.shape[0] > 7:
+        coe = np.delete(coe, 7)
     return coe
 
 
@@ -33,7 +35,7 @@ def polynom7(coe):
     x = symbols('x')
     if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == 0) & (coe[0] == 1):
         return 1
-    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] ==coe[0] == 0):
+    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == coe[0] == 0):
         return 0
     return sp.poly(
         1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
@@ -58,7 +60,7 @@ def decoding():
     print("Декодирование:")
     x = symbols('x')
     g = g74()
-    w = np.array([0, 0, 0, 0, 1, 1, 1])
+    w = np.array([1, 0, 0, 0, 0, 0, 0])
     n = w.shape[0]
     print("Ошибка:", w)
     w = polynom7(w)
