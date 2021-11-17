@@ -76,6 +76,8 @@ def decoding():
         if s_i == 1:
             e = x ** (n - i) * s_i
             res = mod2coef(w + e)
+            print("w+e=", res)
+            res = polynom7(res)
             print("w(x)+e(x)=", res)
             return res
         if i == n - 1:
