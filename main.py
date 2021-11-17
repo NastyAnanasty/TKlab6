@@ -33,6 +33,8 @@ def polynom7(coe):
     x = symbols('x')
     if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == 0) & (coe[0] == 1):
         return 1
+    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] ==coe[0] == 0):
+        return 0
     return sp.poly(
         1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
         coe[6])
@@ -56,7 +58,7 @@ def decoding():
     print("Декодирование:")
     x = symbols('x')
     g = g74()
-    w = np.array([1, 1, 0, 0, 0, 0, 0])
+    w = np.array([0, 0, 0, 0, 1, 1, 1])
     n = w.shape[0]
     print("Ошибка:", w)
     w = polynom7(w)
@@ -72,7 +74,7 @@ def decoding():
         print("i=", i, "s_i=", s_i)
         if s_i == 1:
             e = x ** (n - i) * s_i
-            we= sp.poly(w+e)
+            we = sp.poly(w + e)
             res = mod2coef(we)
             print("w+e=", res)
             res = polynom7(res)
