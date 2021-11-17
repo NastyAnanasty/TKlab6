@@ -24,21 +24,18 @@ def mod2coef(pol):
     coe = pol.all_coeffs()
     coe = np.asarray(coe) % 2
     coe = coe[::-1]
+    for i in range(coe.shape[0], 7):
+        coe = np.append(coe, [0])
     return coe
 
 
 def polynom7(coe):
     x = symbols('x')
+    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == 0) & (coe[0] == 1):
+        return 1
     return sp.poly(
         1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
         coe[6])
-
-
-def polynom4(coe):
-    x = symbols('x')
-    if (coe[1] == coe[2] == 0) & (coe[0] == 1):
-        return 1
-    return sp.poly(1 * coe[0] + x * coe[1] + x ** 2 * coe[2])
 
 
 def coding():
@@ -59,23 +56,24 @@ def decoding():
     print("Декодирование:")
     x = symbols('x')
     g = g74()
-    w = np.array([1, 1, 0, 0, 0, 0, 1])
+    w = np.array([1, 1, 0, 0, 0, 0, 0])
     n = w.shape[0]
     print("Ошибка:", w)
     w = polynom7(w)
     print("w(x)=", w)
     s_x = w % g
     s_x = mod2coef(s_x)
-    s_x = polynom4(s_x)
+    s_x = polynom7(s_x)
     print("s(x)=", s_x)
     for i in range(0, n):
         s_i = (x ** i * s_x) % g
         s_i = mod2coef(s_i)
-        s_i = polynom4(s_i)
+        s_i = polynom7(s_i)
         print("i=", i, "s_i=", s_i)
         if s_i == 1:
             e = x ** (n - i) * s_i
-            res = mod2coef(w + e)
+            we= sp.poly(w+e)
+            res = mod2coef(we)
             print("w+e=", res)
             res = polynom7(res)
             print("w(x)+e(x)=", res)
