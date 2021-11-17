@@ -20,38 +20,68 @@ def a4():
     return sp.poly(1 * a[0, 0] + x * a[0, 1] + x ** 2 * a[0, 2] + x ** 3 * a[0, 3])
 
 
+def mod2coef(pol):
+    coe = pol.all_coeffs()
+    coe = np.asarray(coe) % 2
+    coe = coe[::-1]
+    return coe
+
+
+def polynom7(coe):
+    x = symbols('x')
+    return sp.poly(
+        1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
+        coe[6])
+
+
+def polynom4(coe):
+    x = symbols('x')
+    if (coe[1] == coe[2] == 0) & (coe[0] == 1):
+        return 1
+    return sp.poly(1 * coe[0] + x * coe[1] + x ** 2 * coe[2])
+
+
 def coding():
-    print("Coding:")
+    print("Кодирование:")
     x = symbols('x')
     a = a4()
     g = g74()
     print("a(x)=", a)
     print("g(x)=", g)
     v = a * g
-    coe = v.all_coeffs()
-    coe = np.asarray(coe) % 2
-    coe = coe[::-1]
+    coe = mod2coef(v)
     print("v=", coe)
-    v =sp.poly(
-        1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
-        coe[6])
+    v = polynom7(coe)
     print("v(x)=", v)
 
 
 def decoding():
-    print("Decoding:")
+    print("Декодирование:")
     x = symbols('x')
     g = g74()
-    w = np.array([[1, 1, 0, 0, 0, 0, 1]])
+    w = np.array([1, 1, 0, 0, 0, 0, 1])
+    n = w.shape[0]
     print("Ошибка:", w)
-    w = sp.poly(
-        1 * w[0, 0] + x * w[0, 1] + x ** 2 * w[0, 2] + x ** 3 * w[0, 3] + x ** 4 * w[0, 4] + x ** 5 * w[0, 5] + x ** 6 *
-        w[0, 6])
+    w = polynom7(w)
     print("w(x)=", w)
-    s = w % g
-    print(s)
+    s_x = w % g
+    s_x = mod2coef(s_x)
+    s_x = polynom4(s_x)
+    print("s(x)=", s_x)
+    for i in range(0, n):
+        s_i = (x ** i * s_x) % g
+        s_i = mod2coef(s_i)
+        s_i = polynom4(s_i)
+        print("i=", i, "s_i=", s_i)
+        if s_i == 1:
+            e = x ** (n - i) * s_i
+            res = mod2coef(w + e)
+            print("w(x)+e(x)=", res)
+            return res
+        if i == n - 1:
+            pprint("Исправление ошибки невозможно(")
 
 
 if __name__ == '__main__':
     cod = coding()
-    decod =decoding()
+    decod = decoding()
