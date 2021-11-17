@@ -3,6 +3,7 @@ import sympy as sp
 from sympy import *
 
 
+# -------------------6.1----------------------------
 def g74():
     x = symbols('x')
     return sp.poly(1 + x ** 2 + x ** 3)
@@ -13,8 +14,8 @@ def koeff_g74():
 
 
 def a4():
-    # a = np.random.randint(0, 2, (1, 4))
-    a = np.array([[1, 0, 0, 1]])
+    a = np.random.randint(0, 2, (1, 4))
+    #a = np.array([[1, 0, 0, 1]])
     print("a=", a)
     x = symbols('x')
     return sp.poly(1 * a[0, 0] + x * a[0, 1] + x ** 2 * a[0, 2] + x ** 3 * a[0, 3])
@@ -28,14 +29,15 @@ def mod2coef(pol):
         coe = np.append(coe, [0])
     if coe.shape[0] > 7:
         coe = np.delete(coe, 7)
+        coe[0] = (coe[0] + 1) % 2
     return coe
 
 
 def polynom7(coe):
     x = symbols('x')
-    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == 0) & (coe[0] == 1):
+    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == 0) and (coe[0] == 1):
         return 1
-    if (coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == coe[0] == 0):
+    if coe[1] == coe[2] == coe[3] == coe[4] == coe[5] == coe[6] == coe[0] == 0:
         return 0
     return sp.poly(
         1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
@@ -54,15 +56,20 @@ def coding():
     print("v=", coe)
     v = polynom7(coe)
     print("v(x)=", v)
+    return v
 
 
 def decoding():
+    v = coding()
     print("Декодирование:")
     x = symbols('x')
     g = g74()
-    w = np.array([1, 0, 0, 0, 0, 0, 0])
-    n = w.shape[0]
-    print("Ошибка:", w)
+    mistake = np.array([1, 0, 0, 0, 0, 0, 0])
+    n = mistake.shape[0]
+    print("Ошибка:", mistake)
+    mistake = polynom7(mistake)
+    w = v + mistake
+    w = mod2coef(w)
     w = polynom7(w)
     print("w(x)=", w)
     s_x = w % g
@@ -74,7 +81,7 @@ def decoding():
         s_i = mod2coef(s_i)
         s_i = polynom7(s_i)
         print("i=", i, "s_i=", s_i)
-        if s_i == 1:
+        if s_i == 1 or s_i == 0:
             e = x ** (n - i) * s_i
             we = sp.poly(w + e)
             res = mod2coef(we)
@@ -85,7 +92,8 @@ def decoding():
         if i == n - 1:
             pprint("Исправление ошибки невозможно(")
 
+# -------------------------------------------------
 
 if __name__ == '__main__':
-    cod = coding()
+    #-------------6.1---------------
     decod = decoding()
