@@ -1,15 +1,13 @@
-import binascii
-
 import numpy as np
 import sympy as sp
 from sympy import *
-import itertools as iter
 
 
 # -------------------6.1----------------------------
 def g74():
     x = symbols('x')
     return sp.poly(1 + x ** 2 + x ** 3)
+
 
 def koeff_g74():
     return np.array([[1, 0, 1, 1, 0, 0, 0]])
@@ -21,6 +19,7 @@ def a4():
     print("a=", a)
     x = symbols('x')
     return sp.poly(1 * a[0, 0] + x * a[0, 1] + x ** 2 * a[0, 2] + x ** 3 * a[0, 3])
+
 
 def mod2coef(pol):
     coe = pol.all_coeffs()
@@ -102,8 +101,10 @@ def g15_9():
     x = symbols('x')
     return sp.poly(1 + x ** 3 + x ** 4 + x ** 5 + x ** 6)
 
+
 def koeff_g15_9():
     return np.array([1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0])
+
 
 def a9():
     a = np.random.randint(0, 2, (1, 9))
@@ -112,12 +113,14 @@ def a9():
     return sp.poly(1 * a[0, 0] + x * a[0, 1] + x ** 2 * a[0, 2] + x ** 3 * a[0, 3] + x ** 4 * a[0, 4]
                    + x ** 5 * a[0, 5] + x ** 6 * a[0, 6] + x ** 7 * a[0, 7] + x ** 8 * a[0, 8], x)
 
+
 def polynom15(coe):
     x = symbols('x')
     return sp.poly(
         1 * coe[0] + x * coe[1] + x ** 2 * coe[2] + x ** 3 * coe[3] + x ** 4 * coe[4] + x ** 5 * coe[5] + x ** 6 *
         coe[6] + x ** 7 * coe[7] + x ** 8 * coe[8] + x ** 9 * coe[9] + x ** 10 * coe[10] + x ** 11 * coe[11]
-        + x ** 12 * coe[12]+ x ** 13 * coe[13] + x ** 14 * coe[14], x)
+        + x ** 12 * coe[12] + x ** 13 * coe[13] + x ** 14 * coe[14], x)
+
 
 def mod2coef_n(pol, n):
     coe = pol.all_coeffs()
@@ -144,6 +147,7 @@ def coding_2():
     print("v(x)=", v)
     return v
 
+
 def errors_package():
     x = symbols('x')
     return np.array([
@@ -152,6 +156,7 @@ def errors_package():
         sp.poly(1 + x ** 2),
         sp.poly(1 + x + x ** 2)
     ])
+
 
 def decoding_2():
     v = coding_2()
@@ -187,10 +192,11 @@ def decoding_2():
         if i == n - 1:
             pprint("Исправление ошибки невозможно(")
 
+
 # --------------------------------------------------
 
 if __name__ == '__main__':
     # -------------6.1---------------
-    # decod = decoding()
+    decoding()
     # -------------6.2---------------
     decoding_2()
